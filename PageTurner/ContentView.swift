@@ -8,17 +8,40 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var selectedTab = 0
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        TabView(selection: $selectedTab) {
+            NavigationStack {
+                DiscoverView()
+            }
+            .tabItem {
+                Label("Discover", systemImage: "books.vertical")
+            }
+            .tag(0)
+            
+            NavigationStack {
+                LibraryView()
+            }
+            .tabItem {
+                Label("Library", systemImage: "bookmark.fill")
+            }
+            .tag(1)
+            
+            NavigationStack {
+                BookmarksView()
+            }
+            .tabItem {
+                Label("Bookmarks", systemImage: "text.quote")
+            }
+            .tag(2)
         }
-        .padding()
     }
 }
 
 #Preview {
     ContentView()
+        .environmentObject(BookStore())
+        .environmentObject(LibraryStore())
+        .environmentObject(BookmarkStore())
 }
