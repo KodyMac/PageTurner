@@ -129,6 +129,8 @@ struct BookDetailView: View {
             return
         }
         
+//        print("Text URL: \(book.textURL?.absoluteString ?? "NIL")")
+//        print("All formats: \(book.formats)")
         guard let url = book.textURL else {
             loadError = "No plain text available for this book."
             return

@@ -44,25 +44,31 @@ struct ReaderView: View {
                             .padding(.bottom, 16)
                             .id("top")
                         
-                        Text(currentChapter.content)
-                            .font(readerFont)
-                            .foregroundStyle(settings.theme.textColor)
-                            .lineSpacing(settings.lineSpacing)
-                            .textSelection(.enabled)
+                        LazyVStack(alignment: .leading, spacing: 12) {
+                            ForEach(currentChapter.content.components(separatedBy: "\n\n").filter { !$0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }, id: \.self) { paragraph in
+                                Text(paragraph.trimmingCharacters(in: .whitespacesAndNewlines))
+                                    .font(readerFont)
+                                    .foregroundStyle(settings.theme.textColor)
+                                    .lineSpacing(CGFloat(settings.lineSpacing))
+                                    .textSelection(.enabled)
+                            }
+                        }
                     }
                     .padding(.horizontal,20)
                     .padding(.vertical, 24)
                     .padding(.bottom, 80)
                 }
+                .simultaneousGesture(
+                    TapGesture().onEnded {
+                        withAnimation { showControls.toggle() }
+                    }
+                )
                 .onChange(of: currentChapter.id) { _, _ in
                     withAnimation { proxy.scrollTo("top", anchor: .top)}
                 }
             }
             
-            //tap anywhere to hide or show contorls
-            Color.clear
-                .contentShape(Rectangle())
-                .onTapGesture { withAnimation { showControls.toggle() }}
+            
             
             if showControls {
                 ReaderControlsView(book:book,chapters:chapters, currentChapter: $currentChapter, showChapterPicker: $showChapterPicker, showBookmarkAlert: $showBookmarkAlert)

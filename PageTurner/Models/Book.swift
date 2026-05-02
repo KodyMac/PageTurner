@@ -34,10 +34,20 @@ struct Book: Codable, Identifiable, Hashable {
     var textURL: URL? {
         //use utf8 plain text, default to plain text
         let preferred = ["text/plain; charset=utf-8", "text/plain"]
-        return preferred.compactMap { formats[$0] }
-            .compactMap { URL(string: $0)}
-            .first
+        for key in preferred {
+            if let urlString = formats[key] {
+                //replace url with direct cache url
+                let direct = urlString
+                    .replacingOccurrences(of: "https://www.gutenberg.org/ebooks/", with: "https://www.gutenberg.org/cache/epub/")
+                    .replacingOccurrences(of: ".txt.utf-8", with: "/pg\(id).txt")
+                if let url = URL(string: direct) {
+                    return url
+                }
+            }
+        }
+        return nil
     }
+    
     var authorNames: String {
         authors.map(\.name).joined(separator: ", ")
     }
