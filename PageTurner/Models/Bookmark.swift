@@ -17,7 +17,7 @@ struct Bookmark: Codable, Identifiable {
     var note: String? //user annotations
     let createdAt: Date
     
-    init(bookID: Int, bookTitle: String, chapterIndex: Int, chapterTitle: String,chapterIndex: Int,passage:String,note:String?=nil) {
+    init(bookID: Int, bookTitle: String, chapterIndex: Int, chapterTitle: String,passage:String,note:String?=nil) {
         self.id = UUID()
         self.bookID = bookID
         self.bookTitle = bookTitle

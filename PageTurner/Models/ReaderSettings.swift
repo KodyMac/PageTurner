@@ -32,7 +32,7 @@ enum FontChoice: String, Codable, CaseIterable {
 
 struct ReaderSettings: Codable {
     var fontSize: Double = 17
-    var lineSapcing: Double = 8
+    var lineSpacing: Double = 8
     var fontChoice: FontChoice = .serif
     var theme: ReaderTheme = .light
 }
