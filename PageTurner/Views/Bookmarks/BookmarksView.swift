@@ -51,7 +51,7 @@ struct BookmarksView: View {
                                 Button {
                                     addNote(to: bookmark)
                                 } label: {
-                                    Lable("Note", systemImage: "pencil")
+                                    Label("Note", systemImage: "pencil")
                                 }
                                 .tint(.blue)
                             }

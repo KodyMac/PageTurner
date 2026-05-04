@@ -14,6 +14,9 @@ struct ReaderControlsView: View {
     @Binding var showChapterPicker: Bool
     @Binding var showBookmarkAlert: Bool
     
+    @State private var showSettings = false
+    @EnvironmentObject var libraryStore: LibraryStore
+    
     var body: some View {
         VStack(spacing: 0) {
             Divider()
@@ -54,6 +57,12 @@ struct ReaderControlsView: View {
                         .padding(.vertical, 14)
                 }
                 .disabled(currentChapter.id == chapters.count - 1)
+                
+                Button { showSettings = true } label: {
+                    Image(systemName:"textformat")
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 14)
+                }
                 }
             .background(.regularMaterial)
         }
@@ -83,6 +92,10 @@ struct ReaderControlsView: View {
                 }
             }
             .presentationDetents([.medium, .large])
+        }
+        .sheet(isPresented: $showSettings) {
+            SettingsSheet(current: libraryStore.settings)
+                .environmentObject(libraryStore)
         }
     }
 }
