@@ -11,6 +11,8 @@ struct BookmarksView: View {
     @EnvironmentObject var bookmarkStore: BookmarkStore
     @EnvironmentObject var libraryStore: LibraryStore
     
+    @State private var noteTarget: Bookmark? = nil
+    
     //group bookmarks by book title
     var grouped: [String: [Bookmark]] {
         Dictionary(grouping:bookmarkStore.bookmarks, by: \.bookTitle)
@@ -59,11 +61,14 @@ struct BookmarksView: View {
                 }
             }
         }
+        .sheet(item: $noteTarget) { bookmark in
+            NoteEditorSheet(bookmark: bookmark)
+                .environmentObject(bookmarkStore)
+        }
     }
     
     //MARK: - Add note
     func addNote(to bookmark: Bookmark) {
-        //placeholder for now
-        bookmarkStore.updateNote("My note", for: bookmark.id)
+        noteTarget = bookmark
     }
 }
